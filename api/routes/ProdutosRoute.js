@@ -4,6 +4,7 @@ const multer = require('multer')
 const upload = multer({dest: 'uploads/'})
 const fs = require('fs')
 
+
 const router = Router();
 
 router.get('/produtos', ProdutosController.listaProdutos)

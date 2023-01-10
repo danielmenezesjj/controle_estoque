@@ -22,10 +22,13 @@ class ProdutosController {
       const data = await fs.readFile(req.file.path, { encoding: "utf-8" });
       const jsonData = parser.parse(data);
       const produtos = jsonData.nfeProc.NFe.infNFe.det;
-      const exemplo = produtos.map(({ prod }) => {
-        return prod;
+      const result = produtos.map(({ prod }) => {
+        let p = { ...prod, ...prod.rastro };
+        p.nLote = `${p.nLote}`;
+        delete p.rastro;
+        return p;
       });
-      const newProdutos = await database.Produtos.bulkCreate(exemplo);
+      const newProdutos = await database.Produtos.bulkCreate(result);
       return res.status(201).json(newProdutos);
     } catch (error) {
       console.error(error);
@@ -38,8 +41,9 @@ class ProdutosController {
       const data = await fs.readFile(req.file.path, { encoding: "utf-8" });
       const jsonData = parser.parse(data);
       const produto = jsonData.nfeProc.NFe.infNFe.det.prod;
-      console.log(produto);
-      const newProdutos = await database.Produtos.create(produto);
+      let p = { ...produto, ...produto.rastro };
+      delete p.rastro;
+      const newProdutos = await database.Produtos.create(p);
       return res
         .status(201)
         .send({ mensagem: "Produto Cadastrado com sucesso!" });

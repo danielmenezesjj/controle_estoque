@@ -51,6 +51,18 @@ module.exports = {
       indTot: {
         type: Sequelize.STRING
       },
+      nLote:{
+        type: Sequelize.STRING
+      },
+      qLote:{
+        type: Sequelize.STRING
+      },
+      dFab:{
+        type: Sequelize.STRING
+      },
+      dVal:{
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
