@@ -9,6 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      EmpresaId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {model: 'Empresas', key: 'id'}
+      },
       cProd: {
         type: Sequelize.STRING
       },
@@ -51,16 +56,16 @@ module.exports = {
       indTot: {
         type: Sequelize.STRING
       },
-      nLote:{
+      nLote: {
         type: Sequelize.STRING
       },
-      qLote:{
+      qLote: {
         type: Sequelize.STRING
       },
-      dFab:{
+      dFab: {
         type: Sequelize.STRING
       },
-      dVal:{
+      dVal: {
         type: Sequelize.STRING
       },
       createdAt: {
