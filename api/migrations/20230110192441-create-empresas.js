@@ -24,6 +24,39 @@ module.exports = {
       CRT: {
         type: Sequelize.STRING
       },
+      xLgr: {
+        type: Sequelize.STRING
+      },
+      nro:{
+        type: Sequelize.STRING
+      },
+      xCpl:{
+        type: Sequelize.STRING
+      },
+      xBairro:{
+        type: Sequelize.STRING
+      },
+      cMun:{
+        type: Sequelize.STRING
+      },
+      xMun:{
+        type: Sequelize.STRING
+      },
+      UF: {
+        type: Sequelize.STRING
+      },
+      CEP: {
+        type: Sequelize.STRING
+      },
+      cPais: {
+        type: Sequelize.STRING
+      },
+      xPais: {
+        type: Sequelize.STRING
+      },
+      fone: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
