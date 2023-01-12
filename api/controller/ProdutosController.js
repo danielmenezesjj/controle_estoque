@@ -38,6 +38,7 @@ class ProdutosController {
         delete p.rastro;
         return p;
       });
+      console.log(result)
        const newProdutos = await database.Produtos.bulkCreate(result);
        return res.status(201).json(newProdutos);
     } catch (error) {
@@ -89,6 +90,16 @@ class ProdutosController {
       return res.status(200).json({mensagem: 'Produto deletado com sucesso!'})
     } catch (error) {
       return res.status(404).json(error.message)
+    }
+  }
+
+  static async restoreProdutos(req, res){
+    const {id} = req.params
+    try {
+      await database.Produtos.restore({where: {id: Number(id)}})
+      return res.status(200).json(`O ${id} foi restaurado com sucesso!`)
+    } catch (error) {
+      return res.status(500).json(error.message)
     }
   }
 
