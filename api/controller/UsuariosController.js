@@ -27,7 +27,8 @@ class UsuariosController{
     static async createUser(req, res){
       try {
         const hashedPassword = await bcrypt.hash(req.body.Senha, 10);
-        const newUser = {NmUsuario: req.body.NmUsuario, Login: req.body.Login, Senha: hashedPassword, ConfirmSenha: req.body.hashedPassword, CadastradoPor: req.body.CadastradoPor, Setor: req.body.Setor,
+        const ConfirmhashedPassword = await bcrypt.hash(req.body.ConfirmSenha, 10);
+        const newUser = {NmUsuario: req.body.NmUsuario, Login: req.body.Login, Senha: hashedPassword, ConfirmSenha: ConfirmhashedPassword, CadastradoPor: req.body.CadastradoPor, Setor: req.body.Setor,
         StatusUser : req.body.StatusUser, DtCadastro: req.body.CadastradoPor, dtExpiracaoSenha: req.body.CadastradoPor}
         const created = await database.Users.create(newUser);
         return res.status(201).json(created)

@@ -2,7 +2,7 @@
   "development": {
     "username": "sa",
     "password": "123456",
-    "database": "Estoque_labovet",
+    "database": "Controle_estoque",
     "host": "localhost",
     "dialect": "mssql"
   },
