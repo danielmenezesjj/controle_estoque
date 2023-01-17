@@ -9,6 +9,7 @@ const router = Router();
 
 router.get('/produtos', login ,ProdutosController.listaProdutos)
 router.get('/produtos/:id', ProdutosController.listaUmProduto)
+router.get('/produtos/:id/produtos', ProdutosController.listaProdutosDaEmpresa)
 router.post('/produto', upload.single('arquivo_xml'), ProdutosController.createprodutoXML)
 router.post('/produtos', upload.single('arquivo_xml') ,ProdutosController.createProdutosXML)
 router.post('/produtos/:id/restaura', ProdutosController.restoreProdutos)

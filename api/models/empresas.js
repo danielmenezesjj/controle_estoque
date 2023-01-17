@@ -7,7 +7,6 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       Empresas.hasMany(models.Produtos) // Uma empresa pra varios produtos
-
     }
   }
   Empresas.init({

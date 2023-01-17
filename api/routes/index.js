@@ -3,7 +3,6 @@ const produtos = require('./ProdutosRoute')
 const empresas = require('./EmpresasRoute')
 const estoque = require('./EstoqueRoute')
 const users = require('./UsersRoute')
-const cors = require('cors')
 
 module.exports = app =>{
     app.use(bodyParser.json())
@@ -11,5 +10,5 @@ module.exports = app =>{
     app.use(empresas)
     app.use(estoque)
     app.use(users)
-    app.use(cors())
+    
 }

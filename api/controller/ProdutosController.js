@@ -48,16 +48,25 @@ class ProdutosController {
 
   static async createprodutoXML(req, res) {
     try {
+      let empresa_id = req.body;
       const parser = new XMLParser();
       const data = await fs.readFile(req.file.path, { encoding: "utf-8" });
       const jsonData = parser.parse(data);
       const produto = jsonData.nfeProc.NFe.infNFe.det.prod;
-      let p = { ...produto, ...produto.rastro };
+      let p = { ...produto, ...produto.rastro, ...empresa_id, ...produto.cProd };
+      const codigoProduto = p.cProd
       delete p.rastro;
-      const newProdutos = await database.Produtos.create(p);
-      return res.status(201).json(newProdutos)
+      const newProdutos = await database.Produtos.findAll({where: {cProd: codigoProduto}});
+      if(newProdutos.length != 0){
+        return res.status(411).json(`Produto já cadastrado`)
+      }else{
+        const cadastrando = await database.Produtos.create(p)
+        return res.status(201).json(cadastrando)
+      }
+      
+      // return res.status(201).json(newProdutos)
     } catch (error) {
-      return res.status(405).send({mensagem: 'XML CONTEM MAIS DE UM PRODUTO'})
+      console.error(error)
     }
   }
   
@@ -103,6 +112,16 @@ class ProdutosController {
     }
   }
 
+  static async listaProdutosDaEmpresa(req, res){
+    const {id} = req.params
+    try {
+      const empresa = await database.Empresas.findOne({where: {id: Number(id)}})
+      const produtos = await empresa.getProdutosCadastrados()
+      return res.status(200).json(produtos)
+    } catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
 
 }
 module.exports = ProdutosController;
