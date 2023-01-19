@@ -9,7 +9,6 @@ class EmpresasController{
     static async ListaEmpresas(req, res){
         try {
             const listEmpresas = await database.Empresas.findAll();
-            console.log(listEmpresas.length)
             return res.status(200).json(listEmpresas)
         } catch (error) {
             return res.status(500).json(error.message)
@@ -32,8 +31,13 @@ class EmpresasController{
             const data = await fs.readFile(req.file.path, { encoding: "utf-8" });
             const jsonData = parser.parse(data);
             const empresas = jsonData.nfeProc.NFe.infNFe.emit;
-            let e = {...empresas, ...empresas.enderEmit}
+            let e = {...empresas, ...empresas.enderEmit, ...empresas.CNPJ}
             delete e.enderEmit
+            const codEmpresa = empresas.CNPJ
+            const verfEmpresas = await database.Empresas.findAll({where: {CNPJ: codEmpresa}}) 
+            if(verfEmpresas != 0){
+                return res.status(422).json('Empresa já cadastrada!')
+            }
             const createEmpresa = await database.Empresas.create(e);
             return res.status(201).json(createEmpresa)
         } catch (error) {

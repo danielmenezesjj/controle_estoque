@@ -54,17 +54,18 @@ class ProdutosController {
       const jsonData = parser.parse(data);
       const produto = jsonData.nfeProc.NFe.infNFe.det.prod;
       let p = { ...produto, ...produto.rastro, ...empresa_id, ...produto.cProd };
-      const codigoProduto = p.cProd
+      p.cProd = `${p.cProd}`
+      const nLote = p.nLote
       delete p.rastro;
-      const newProdutos = await database.Produtos.findAll({where: {cProd: codigoProduto}});
+      const newProdutos = await database.Produtos.findAll({where: {cProd: p.cProd}});
       if(newProdutos.length != 0){
-        return res.status(411).json(`Produto já cadastrado`)
+        res.status(422).json(`O produto com o codigo: ${p.cProd} e o lote: ${nLote} já está cadastrado`)
+        const attQuantidade = await database.Produtos.sequelize.query(`update Produtos SET qCom = qCom + ${p.qCom} where cProd = '${p.cProd}'`)
+        
       }else{
         const cadastrando = await database.Produtos.create(p)
         return res.status(201).json(cadastrando)
       }
-      
-      // return res.status(201).json(newProdutos)
     } catch (error) {
       console.error(error)
     }
