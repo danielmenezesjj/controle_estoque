@@ -33,20 +33,15 @@ class ProdutosController {
       const jsonData = parser.parse(data);
       const produtos = jsonData.nfeProc.NFe.infNFe.det;
       const result = produtos.map(({ prod }) => {
-        let p = { ...prod, ...prod.rastro, ...empresa_id, ...prod.cProd };
+        let p = { ...prod, ...prod.rastro, ...empresa_id};
         p.nLote = `${p.nLote}`;
-        prod.cProd = `${prod.cProd}`
         delete p.rastro;    
         return p
       }); 
-      // for (let index = 0; index < result.length; index++) {
-      //   let element = result[index].cProd;
-      //   element = `${element}`
-      //   const teste = await database.Produtos.findAll({where: {cProd: element}}) 
-      //   res.status(200).json(teste)
-      // }
+      const createProdutos = await database.Produtos.bulkCreate(result)
+      return res.status(200).json(createProdutos)
     } catch (error) {
-      console.log(error)
+      return res.status(500).json(error)
     }
   }
 
@@ -119,9 +114,8 @@ class ProdutosController {
   static async listaProdutosDaEmpresa(req, res){
     const {id} = req.params
     try {
-      const empresa = await database.Empresas.findOne({where: {id: Number(id)}})
-      const produtos = await empresa.getProdutosCadastrados()
-      return res.status(200).json(produtos)
+      const listProdutos = await database.Produtos.findAll({where: {EmpresaId: id}})
+      return res.status(200).json(listProdutos)
     } catch (error) {
       return res.status(500).json(error.message)
     }

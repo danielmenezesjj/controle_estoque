@@ -33,8 +33,8 @@ module.exports = {
       DtCadastro: {
         type: Sequelize.STRING
       },
-      dtExpiracaoSenha: {
-        type: Sequelize.STRING
+      AlterSenha: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,

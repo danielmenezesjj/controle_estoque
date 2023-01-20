@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 class UsuariosController {
+
   static async listUsers(req, res) {
     try {
       const usersList = await database.Users.findAll();
@@ -39,8 +40,8 @@ class UsuariosController {
         CadastradoPor: req.body.CadastradoPor,
         Setor: req.body.Setor,
         StatusUser: req.body.StatusUser,
-        DtCadastro: req.body.CadastradoPor,
-        dtExpiracaoSenha: req.body.CadastradoPor,
+        DtCadastro: req.body.DtCadastro,
+        AlterSenha: req.body.AlterSenha,
       };
       const created = await database.Users.create(newUser);
       return res.status(201).json(created);
@@ -68,7 +69,7 @@ class UsuariosController {
         return res.status(401).json({ mensagem: "Senha invalida!" });
       });
     } catch (error) {
-      console.log(error);
+      return res.status(500).json(error);
     }
   }
 
@@ -85,5 +86,35 @@ class UsuariosController {
       return res.status(404).json({ mensagem: "Usuario não encontrado!" });
     }
   }
+
+  static async profile(req, res){
+  const {Login} = req.body
+  try {
+    const profileUser = await database.Users.findAll({where: {Login: Login}})
+    return res.status(200).json(profileUser)
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+  }
+  
+  static async alterPassword(req, res){
+    const {Login} = req.body
+    const newPassword = await bcrypt.hash(req.body.Senha, 10);
+    const confirmPassword = await bcrypt.hash(req.body.ConfirmSenha, 10)
+    const newInfos = {
+      Senha: newPassword,
+      ConfirmSenha: confirmPassword,
+      AlterSenha: false
+    }
+    try {
+      await database.Users.update(newInfos, {where: {Login: Login}})
+      const atualizado = await database.Users.findOne({where: {Login: Login}})
+      return res.status(200).json(atualizado)
+    } catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
+
+
 }
 module.exports = UsuariosController;

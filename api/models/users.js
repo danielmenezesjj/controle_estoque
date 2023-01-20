@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     Setor: DataTypes.STRING,
     StatusUser: DataTypes.STRING,
     DtCadastro: DataTypes.DATE,
-    dtExpiracaoSenha: DataTypes.DATE
+    AlterSenha: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Users',
