@@ -33,7 +33,7 @@ class EmpresasController{
             const empresas = jsonData.nfeProc.NFe.infNFe.emit;
             let e = {...empresas, ...empresas.enderEmit, ...empresas.CNPJ}
             delete e.enderEmit
-            const codEmpresa = empresas.CNPJ
+            const codEmpresa = `${empresas.CNPJ}`            
             const verfEmpresas = await database.Empresas.findAll({where: {CNPJ: codEmpresa}}) 
             if(verfEmpresas != 0){
                 return res.status(422).json('Empresa já cadastrada!')
