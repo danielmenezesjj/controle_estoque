@@ -60,6 +60,9 @@ class UsuariosController {
         if (err) {
           return res.status(500).json(err.message);
         }
+        if(userBd.StatusUser == 0){
+          return res.status(401).json(`Usuario desabilitado!!`)
+        }
         if (result) {
           const token = jwt.sign({}, "privateKey", { expiresIn: "10h" });
           return res
@@ -84,6 +87,19 @@ class UsuariosController {
         .json({ mensagem: "Usuario deletado com sucesso!" });
     } catch (error) {
       return res.status(404).json({ mensagem: "Usuario não encontrado!" });
+    }
+  }
+
+  static async updateUser(req, res){
+    const {id} = req.params
+    const newInfos = req.body
+    try {
+      await database.Users.update(newInfos, {where: {id: Number(id)}})
+      const userAtt = await database.Users.findAll({where: {id: Number(id)}})
+      return res.status(200).json(userAtt)
+
+    } catch (error) {
+      return res.status(404).json(error)
     }
   }
 

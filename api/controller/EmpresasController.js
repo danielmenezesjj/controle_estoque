@@ -1,8 +1,7 @@
 const database = require("../models");
 const fs = require("fs").promises;
 const { XMLParser } = require("fast-xml-parser");
-const util = require("util");
-const sequelize = require("sequelize");
+
 
 class EmpresasController{
     
